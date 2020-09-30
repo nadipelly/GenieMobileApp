@@ -1,0 +1,60 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.genieapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+      android:name=".MainApplication"
+      android:label="@string/app_name"
+      android:icon="@mipmap/launcher"
+      android:roundIcon="@mipmap/launcher"
+      android:allowBackup="false"
+        android:largeHeap="true"
+      android:theme="@style/AppTheme">
+      <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+        android:launchMode="singleTask"
+        android:windowSoftInputMode="adjustPan">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+<!--          <intent-filter >-->
+<!--              <action android:name="android.intent.action.VIEW" />-->
+<!--              <category android:name="android.intent.category.DEFAULT" />-->
+<!--              <category android:name="android.intent.category.BROWSABLE" />-->
+<!--              &lt;!&ndash; Accepts URIs that begin with "http://www.example.com/gizmos” &ndash;&gt;-->
+<!--              <data android:scheme="http"-->
+<!--                  android:host="genie"-->
+<!--                  android:pathPrefix="/app.com" />-->
+              <!-- note that the leading "/" is required for pathPrefix-->
+<!--          </intent-filter>/-->
+          <intent-filter >
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <!-- Accepts URIs that begin with "example://gizmos” -->
+              <data android:scheme="genie"
+                  android:host="app.com" />
+          </intent-filter>
+
+
+          <intent-filter >
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <!-- Accepts URIs that begin with "example://gizmos” -->
+              <data android:scheme="genie"
+                  android:host="app.com" />
+          </intent-filter>
+
+      </activity>
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+    </application>
+
+</manifest>
