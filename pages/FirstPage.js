@@ -69,7 +69,7 @@ const FirstPage = ({ navigation }) => {
   const [isCity, setCityVis] = useState(false);
   // const [jobs, setJobs] = useState(0);
   // const [pagenum, setPageNum] = useState(1);
-  
+
   const [jobs, setJobs] = useState(0);
   const [pagenum, setPageNum] = useState(1);
 
@@ -449,8 +449,46 @@ const FirstPage = ({ navigation }) => {
 
   }, []);
 
+  function searchClearProf() {
+    searchClear("", searchSpec, searchState, searchCity, searchShift, searchDate, searchId)
+
+  }
+
+  
+  function searchClearSpec() {
+    searchClear(searchProf, "", searchState, searchCity, searchShift, searchDate, searchId)
+
+  }
+
+  function searchClearState() {
+    searchClear(searchProf,searchSpec, "", searchCity, searchShift, searchDate, searchId)
+
+  }
+
+  function searchClearCity() {
+    searchClear(searchProf,searchSpec,searchState, "", searchShift, searchDate, searchId)
+
+  }
+
+  
+  function searchClearShift() {
+    searchClear(searchProf,searchSpec,searchState, searchCity,"", searchDate, searchId)
+  }
+
+  function searchClearDate() {
+    searchClear(searchProf,searchSpec,searchState,searchCity, searchShift,"", searchId)
+  }
+
+
+  function searchClearId() {
+    searchClear(searchProf,searchSpec,searchState,searchCity, searchShift,searchDate,"")
+  }
+
 
   searchClear = (prof, spec, state, city, shift, date, sid) => {
+    console.log("prof1" + prof);
+    console.log("spec1" + spec);
+
     setSearchProf(prof);
     setSearchSpec(spec);
     setSearchCity(city);
@@ -458,6 +496,10 @@ const FirstPage = ({ navigation }) => {
     setSearchid(sid);
     setSearchDate(date);
     setDate(date);
+
+
+
+
     if (date != null) {
       // setFormattedDate(moment(date).format('yyyy-MM-DDT13:00:00.000Z'));
       setFormattedDate(moment(date).format('yyyy-MM-DD'));
@@ -477,7 +519,9 @@ const FirstPage = ({ navigation }) => {
     setSelected(1);
     try {
 
-      console.log("sid" + sid);
+      console.log("prof" + prof);
+      console.log("spec" + spec);
+
 
       if (!isNumber(sid)) {
         sid = null;
@@ -678,7 +722,7 @@ const FirstPage = ({ navigation }) => {
           marginBottom: hp('8%'),
 
         }}
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start' }}
 
           stickyHeaderIndices={[0]}
           ListHeaderComponent={
@@ -899,7 +943,7 @@ const FirstPage = ({ navigation }) => {
               />
 
               {isProf &&
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind("", searchSpec, searchState, searchCity, searchShift, searchDate, searchId)} >
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearProf} >
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>
@@ -937,8 +981,7 @@ const FirstPage = ({ navigation }) => {
 
 
               {isSpec &&
-
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind(searchProf, "", searchState, searchCity, searchShift, searchDate, searchId)} >
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearSpec} >
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>
@@ -975,6 +1018,8 @@ const FirstPage = ({ navigation }) => {
                   search(searchProf, searchSpec, item.value, searchCity, searchShift, searchDate, searchId)
                 } else {
                   setAllStates(getAllStatesPer);
+                  setSearchState("")
+                  searchClearState()
                 }
 
               }}
@@ -1010,7 +1055,7 @@ const FirstPage = ({ navigation }) => {
               {isCity &&
 
 
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind(searchProf, searchSpec, searchState, "", searchShift, searchDate, searchId)} >
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearCity} >
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>
@@ -1054,7 +1099,7 @@ const FirstPage = ({ navigation }) => {
 
               {isShift &&
 
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind(searchProf, searchSpec, searchState, searchCity, "", searchDate, searchId)} >
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearShift} >
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>
@@ -1108,7 +1153,7 @@ const FirstPage = ({ navigation }) => {
 
 
 
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind(searchProf, searchSpec, searchState, searchCity, searchShift, "", searchId)}>
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearDate}>
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>
@@ -1154,7 +1199,7 @@ const FirstPage = ({ navigation }) => {
 
 
 
-                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClear.bind(searchProf, searchSpec, searchState, searchCity, searchShift, searchDate, "")} >
+                <TouchableOpacity style={{ paddingTop: 0, paddingBottom: 0, justifyContent: "center", alignSelf: "center" }} onPress={searchClearId} >
                   <FontistoIcon
                     name="close-a" size={18} color="#337AB7" style={{ paddingTop: 0, paddingBottom: 0, marginRight: 10, alignSelf: "center", alignItems: "center", }} />
                 </TouchableOpacity>

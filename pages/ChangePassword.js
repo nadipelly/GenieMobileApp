@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, TouchableHighlight,BackHandler, ActivityIndicator, FlatList, ListItem, TextInput, SafeAreaView, StatusBar, ScrollView, View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { Button, StyleSheet,ToastAndroid, TouchableHighlight, BackHandler, ActivityIndicator, FlatList, ListItem, TextInput, SafeAreaView, StatusBar, ScrollView, View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from '@react-native-community/checkbox';
 import axios from 'axios';
@@ -38,11 +38,11 @@ const ChangePassword = ({ route, navigation }) => {
   const [isLogin, setLoginFlag] = useState(true)
 
 
-  
+
   function handleBackButtonClick() {
     try {
       if (navigation != null)
-      navigation.goBack(null);
+        navigation.goBack(null);
       return true;
     } catch (error) {
       console.log(error)
@@ -55,6 +55,23 @@ const ChangePassword = ({ route, navigation }) => {
     return re.test(passwordd);
 
   };
+
+  showToast = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      "Your password has been changed successfully !!",
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
+  };
+
+  
+  navigateLogin = () => {
+    navigation.replace('Login', { login: true })
+    // showToast();
+
+};
   isupper = (passwordd) => {
     var re = /(?=.*[A-Z])/;
     return re.test(passwordd);
@@ -99,9 +116,8 @@ const ChangePassword = ({ route, navigation }) => {
             setIsLoading(false);
 
             if (res != null && res.status == 200) {
-
+              showToast();
               setIsLoading(false);
-
               console.log("RESPONSE RECEIVED DATA: ", res.data);
               navigation.replace('Login', { login: true })
 
@@ -118,6 +134,12 @@ const ChangePassword = ({ route, navigation }) => {
                 setTitle("Error")
                 setBody(err.response.data.AuthenticationException)
                 setalertVisiblity(true)
+              }else{
+                if(err.response.data!=null){
+                  setTitle("Error")
+                  setBody(err.response.data)
+                  setalertVisiblity(true)
+                }
               }
             }
 
@@ -192,7 +214,7 @@ const ChangePassword = ({ route, navigation }) => {
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-    
+
     YellowBox.ignoreWarnings(['Animated: `useNativeDriver`']);
 
     setToken(AsyncStorage.getItem("token"));
@@ -222,11 +244,11 @@ const ChangePassword = ({ route, navigation }) => {
 
     else
       setLoginFlag(false);
-      return () => {
-    
-        BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-  
-      }
+    return () => {
+
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+
+    }
   }, []);
 
 
@@ -258,6 +280,11 @@ const ChangePassword = ({ route, navigation }) => {
                   width: "92%", alignSelf: "center",
                   fontWeight: "bold", marginRight: 5, fontSize: fonts.fontNormal, color: "#337AB7", lineHeight: 30,
                 }}>You haven't logged in yet. Please login to Change Password</Text>
+
+              <TouchableOpacity onPress={navigateLogin} style={styles.loginBtn}>
+                <Text style={styles.textStyle}>Login</Text>
+              </TouchableOpacity>
+
             </View>
           }
 

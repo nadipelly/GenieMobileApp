@@ -125,16 +125,16 @@ const SignupScreen = ({ route, navigation }) => {
 
 
 
-  function handleBackButtonClick() {
-    try {
-      if (navigation != null)
-        navigation.navigate('Login');
-      return true;
-    } catch (error) {
-      console.log(error)
-      return false;
-    }
-  }
+  // function handleBackButtonClick() {
+  //   try {
+  //     if (navigation != null)
+  //       navigation.replace('Login');
+  //     return true;
+  //   } catch (error) {
+  //     console.log(error)
+  //     return false;
+  //   }
+  // }
 
   formjson = (item, isLic) => {
 
@@ -260,41 +260,39 @@ const SignupScreen = ({ route, navigation }) => {
       };
 
 
-      console.log("Registration post: ", postData);
-
-      console.log("Registration post: ", production.signupAPI);
-
-
       try {
 
         axios.post(production.signupAPI, postData, axiosConfig)
           .then((res) => {
 
-            console.log("response", res);
-
+            try{
             setIsLoading(false);
 
-            if (res != null && res.status == 201) {
+            if (res != null && res.status != null && res.status == 201) {
               setSubmitted(true);
               setIsLoading(false);
-
               setTitle("Success")
-              setBody("You have successfully registerd")
+              setBody("You have successfully registered")
               setalertVisiblity(true)
-              console.log("RESPONSE RECEIVED DATA: ", res.data);
 
             }
+          }catch(error){
+            setIsLoading(false);
+
+            if (error != null) {
+              setTitle("Error")
+              setBody(error)
+              setalertVisiblity(true)
+            }
+          }
           })
           .catch((err) => {
             setIsLoading(false);
+            try{
+            if (err != null && err.response != null) {
 
-            if (err.response) {
 
-
-              console.log("err" + err.response);
-              if (err.response.data.AuthenticationException) {
-                // alert(err.response.data.AuthenticationException)
-
+              if (err.response.data.AuthenticationException != null) {
                 setTitle("Error")
                 setBody(err.response.data.AuthenticationException)
                 setalertVisiblity(true)
@@ -304,24 +302,34 @@ const SignupScreen = ({ route, navigation }) => {
                 setalertVisiblity(true)
               }
             }
+          }catch(error){
+            setIsLoading(false);
+
+            if (error != null) {
+              setTitle("Error")
+              setBody(error)
+              setalertVisiblity(true)
+            }
+          }
 
           })
-
+       
 
       } catch (error) {
+        setIsLoading(false);
 
-        console.log(error)
-        setTitle("Error")
-        setBody(error)
-        setalertVisiblity(true)
+        if (error != null) {
+          setTitle("Error")
+          setBody(error)
+          setalertVisiblity(true)
+        }
       }
-
+   
 
 
     } catch (error) {
       setIsLoading(false);
 
-      console.log(error)
 
     }
 
@@ -443,6 +451,7 @@ const SignupScreen = ({ route, navigation }) => {
             SingleFile(response);
 
           } else {
+            setSubmitted(false);
 
             setTitle("Alert")
             setBody("Resume of type docx or pdf is only allowed!");
@@ -485,10 +494,7 @@ const SignupScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     // setIsLoading(true);
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-
-
-    YellowBox.ignoreWarnings(['Animated: `useNativeDriver`']);
+    // BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
 
     const fetchData = async () => {
       let drop_down_data = [];
@@ -580,11 +586,11 @@ const SignupScreen = ({ route, navigation }) => {
     setIsLoading(false);
 
 
-    return () => {
+    // return () => {
 
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+    //   BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
 
-    }
+    // }
 
   }, []);
 

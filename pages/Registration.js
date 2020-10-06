@@ -337,10 +337,9 @@ const Registration = ({ route, navigation }) => {
 
         axios.post(production.submitRegistrationAPI, postData, axiosConfig)
           .then((res) => {
-            console.log("RESPONSE RECEIVED: ", res);
             setIsLoading(false);
 
-            if (res != null && res.status == 201) {
+            if (res != null && res.status!=null && res.status == 201) {
               setSubmitted(true);
               setIsLoading(false);
 
@@ -355,10 +354,10 @@ const Registration = ({ route, navigation }) => {
           .catch((err) => {
             setIsLoading(false);
 
-            if (err.response) {
+            if (err!=null && err.response!=null && err.response.data!=null) {
 
               console.log(err.response.data);
-              if (err.response.data.AuthenticationException) {
+              if (err.response.data.AuthenticationException!=null) {
                 // alert(err.response.data.AuthenticationException)
 
                 setTitle("Error")
@@ -430,6 +429,7 @@ const Registration = ({ route, navigation }) => {
 
           } else {
 
+            setSubmitted(false);
             setTitle("Alert")
             setBody("Resume of type docx or pdf is only allowed!");
             setalertVisiblity(true)
@@ -486,7 +486,7 @@ const Registration = ({ route, navigation }) => {
   function handleBackButtonClick() {
     try {
       if (navigation != null)
-        navigation.goBack(null);
+        navigation.replace('Login');
         return true;
     } catch (error) {
       console.log(error)
@@ -1222,7 +1222,7 @@ const Registration = ({ route, navigation }) => {
 
                 if (isSubmitted)
                   // navigation.replace('Dashboard')
-                  navigation.goBack(null);
+                  navigation.replace('Login');
 
 
 

@@ -6,10 +6,50 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import fonts from './fonts';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CardView from 'react-native-cardview'
+import { captureScreen } from "react-native-view-shot";
+import Share from "react-native-share";
 
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 function SecondPage({ route, navigation }) {
+
+  const [imageURI, setImageUri] = useState("")
+
+  const shareSingleImage = async (uri) => {
+    const shareOptions = {
+      title: 'Share file',
+      url: uri,
+      failOnCancel: false,
+    };
+
+    try {
+      const ShareResponse = await Share.open(shareOptions);
+      setResult(JSON.stringify(ShareResponse, null, 2));
+    } catch (error) {
+      console.log('Error =>', error);
+      setResult('error: '.concat(getErrorString(error)));
+    }
+  };
+
+  function takeScreenShot(){
+    //handler to take screnshot
+    captureScreen({
+      //either png or jpg or webm (Android). Defaults to png
+      format: "jpg",
+      //quality 0.0 - 1.0 (default). (only available on lossy formats like jpg)
+      quality: 0.8
+    })
+    .then(
+      //callback function to get the result URL of the screnshot
+      uri =>{
+        console.log("image", uri);
+        setImageUri(uri)
+        shareSingleImage(uri);
+      } ,
+      error => console.error("Oops, Something Went Wrong", error)
+    );
+  }
 
 
   function handleBackButtonClick() {
@@ -80,12 +120,17 @@ function SecondPage({ route, navigation }) {
 
 
             <View style={{
-              width: "100%", flexDirection: 'row',
+              width: "100%", flexDirection: 'row', 
             }}>
+              
+              <View style={{flex: 0.9,               width: "100%", flexDirection: 'row', 
+}}>
 
               <Text
                 style={{ fontFamily: 'Roboto', fontWeight: "bold", textAlign: "left", marginLeft: 10, marginRight: 5, fontSize: fonts.fontTV, color: "#337AB7", }}>Job</Text>
               <Text style={{ fontFamily: 'Roboto', width: wp('70%'), alignSelf: "flex-start", fontWeight: "bold", marginRight: 10, fontSize: fonts.fontTV, paddingRight: 10, color: "#337AB7", alignSelf: "flex-start" }}>{route.params.id}</Text>
+              </View>
+              <Icon onPress={takeScreenShot} name="share-alt" size={24} color="#337AB7" style={{ flex: 0.1,alignSelf: "flex-end", marginRight: 16, alignItems: "flex-end",  }} />
 
             </View>
             <View style={styles.divider

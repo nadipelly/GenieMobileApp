@@ -324,10 +324,7 @@ const LoginScreen = ({ route, navigation }) => {
               <Text style={styles.textStyle}>LOGIN</Text>
 
             </TouchableOpacity>
-            <Button
-              onPress={() => Linking.openURL('genie://app.com')}
-              title="Open genie://app"
-            />
+           
 
             <View style={{
               width: "90%", flexDirection: 'row', justifyContent: "flex-end",
